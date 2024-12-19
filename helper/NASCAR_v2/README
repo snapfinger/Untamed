@@ -1,0 +1,180 @@
+========================================
+License
+========================================
+
+Without otherwise noticed, the NASCAR code and all of its dependencies ("CODE"), including, but not limited to, the dependent functions, files, documentations, either distributed in source code or a compiled version, are licensed under the GNU General Public License, version 3 (GPLv3). Further details can be found at https://www.gnu.org/licenses/gpl-3.0.en.html.
+
+You are required to cite at least the original NASCAR papers as follows, if you use this CODE and/or its derivatives in your own work.
+
+J. Li, J. L. Wisnowski, A. A. Joshi, R. M. Leahy,
+"Robust brain network identification from multi-subject asynchronous fMRI data",
+NeuroImage, vol. 227, p. 117615, 2021.
+https://doi.org/10.1016/j.neuroimage.2020.117615
+
+J. Li, J. L. Wisnowski, A. A. Joshi, R. M. Leahy,
+"Brain network identification in asynchronous task fMRI data using robust and scalable tensor decomposition",
+Proc. SPIE Medical Imaging 2019: Image Processing, San Diego, CA, Mar. 2019, pp. 164–172.
+https://doi.org/10.1117/12.2512684
+
+========================================
+Disclaimer
+========================================
+
+IN NO EVENT SHALL THE AUTHORS, THE CONTRIBUTORS, THE DISTRIBUTORS, THE UNIVERSITY OF SOUTHERN CALIFORNIA AND THE MASSACHUSETTS GENERAL HOSPITAL ("AUTHORS") BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS CODE, EVEN IF THE AUTHORS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE AUTHORS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. FOR RESEARCH PURPOSE ONLY. THIS CODE IS PROVIDED ON A "AS IS" BASIS AND THE AUTHORS HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+========================================
+Dependencies
+========================================
+
+* TFOCS:
+
+NASCAR itself does not rely on any external toolbox or package outside the standard MATLAB environment. However, the internal solver for the rank one decomposition used in our experiments is our own implementation of the ALS algorithm, in which we used the TFOCS (http://cvxr.com/tfocs/) optimization toolbox to solve each (constrained) sub-problem inside ALS iterations.
+
+- If you do not need to impose any constraint, you don't need to setup TFOCS, instead set option.rankOneOptALS.useTFOCS to false.
+
+- If you do need any constraint and decide to use our version of ALS, you need to have TFOCS setup. Link for TFOCS toolbox: http://cvxr.com/tfocs/download/ and its documentation: http://cvxr.com/tfocs/doc/.
+
+- Or you may write your own ALS function or other CP decomposition methods for SRSCPD to call.
+
+* N-way Toolbox:
+
+We provided an option to calculate the CORCONDIA metric for the rank estimation, which called the "corcond" function inside the N-way Toolbox offered by Rasmus Bro & Claus A. Andersson. If you decide to use this functionality by turning the option.isStats on, you need to setup the N-way Toolbox, which can be directly downloaded from http://www.models.life.ku.dk/nwaytoolbox/download. Make sure to use the version 3.31 (nway331).
+
+========================================
+Usage
+========================================
+
+----------------------------------------
+option = cpOpt();
+
+Obtain the default options for cpOpt - optimization-based solver.
+
+	option.init:
+		The initialization method. This option is either a cell array that contains a matrix as the initialization or 'random' for random initialization or 'svd' for singular value decomposition initialization. Default is 'random'
+
+    option.normRegParam:
+    	The regularization parameter to avoid ambiguity of the scale of the modes. Default is 0.01.
+
+    option.cacheMTS:
+    	A binary flag indicating whether to cache the matricized tensor in memory or not. Caching will result in significant improvement of computational speed at the cost of significant usage of system memory. Default is true.
+
+    option.nonnegative:
+    	Non-negative constraint at each dimension. Default is false.
+    
+    option.solver:
+    	The specific solver to solve the optimization problem. Default is Nesterov-accelerated adaptive moment estimation method, i.e. @adam_solver. See below.
+
+----------------------------------------
+option = adam_solver();
+
+Obtain the default solver for adam_solver
+
+    option.learningRate:
+    option.beta1:
+    option.beta2:
+    option.epsilon:
+        Adam default parameters. See Adam algorithm for details. Defaults are: learn rate: 0.001, beta 1 = 0.9, beta 2 = 0.999, epsilon = sqrt(eps).
+
+    option.maxNumIter:
+        Maximum number of iteration. Default = 1e4.
+
+    option.tolX:
+    option.tolFunc:
+        Criteria for convergence. tolX is the tolerance for the solution with default 1e-4 and tolFunc is the tolerance for the cost function value with default 1e-6.
+
+    option.isNesterovAccelerated:
+        A binary flag indicating whether to use Nesterov acceleration or not. Default is true.
+
+    option.printItv:
+        Print intermediate result every printItv iteration. Default is 10.
+
+    option.nonnegMask:
+        The non-nagativity constraint binary mask which has the same size of the solution indicating whether to restrict the value to be non-negative or not. Default is empty meaning no constraint is imposed.
+
+    option.epoch:
+        Number of steps to blindly going forward without checking the function value (decreasing or not). Useful when evaluation of the function value is much more expensive than obtaining the gradient. The solution will be rolled back to where it was before the epoch if the function value is higher after the epoch. Because of that, setting this parameter too much will result in a risk of wasting even more time to going forward blindly. This epoch will be decreased automatically whenever a roll-back occurs. Default is 10.
+
+    option.isVerbose:
+        A binary flag for verbose mode. Default is true.
+
+----------------------------------------
+The NASCAR method is implemented within the SRSCPD framework. The usage of SRSCPD will be illustrated below.
+
+option = srscpd();
+
+Obtain the default options for SRSCPD framework
+
+	option.isStats: 
+	    A binary flag to indicate whether to calculate the statistics for the decomposition results or not. If yes, nway toolbox is required, see demo.m. Statistics include explained variance (EV) and the CORCONDIA (CCD) metric. Default is false.
+
+	option.maxNumFitRes:
+	    The maximum number of re-fit if the rank-1 tensor fitting failed. Default is 10.
+
+	option.isVerbose:
+	    A binary flag indicating the verbosity. Default is true.
+
+    option.nonnegative:
+        Non-negative constraint at each dimension. Default is false.
+
+    option.cacheMTS:
+        A binary flag indicating whether to cache the matricized tensor in memory or not. Caching will result in significant improvement of computational speed at the cost of significant usage of system memory. Default is true.
+    
+    option.rankOneOptALS:
+        Options for CP-ALS algorithm to solve each rank 1 fit to the residual tensor
+
+	option.rankOneInit:
+	    The initialization for each rank-1 tensor fitting. This option is either a cell array that contains a matrix as the initialization for each iteration or 'random' for random initialization or 'svd' for singular value decomposition initialization. Default is 'random'.
+    
+    option.alg:
+        The internal solver used for the main tensor fitting. Default is ALS.
+
+	option.optAlg:
+	    The option structure for option.alg above. Default is the default options for option.alg.
+
+	option.algFunc:
+	    The function handle of option.alg. Default is @cpALS.
+
+    option.saveToFile:
+        The path to a file where the results are saved
+
+    option.logFile:
+        The path to a file where the log is saved
+
+    option.resumeFrom:
+        The result struct from lower rank solution so the decomposition can be resumed to obtain higher rank solution
+
+----------------------------------------
+option = srscpd(@cpOpt); 
+
+Obtain the default options for SRSCPD using optimization-based solver internally. This command will automatically set
+    option.alg = 'custom'
+    option.algFunc = @cpOpt
+    option.optAlg = default parameters for @cpOpt
+
+However, cpOpt will be only used to solve the main decomposition problem. During each rank-1 fitting for warm start, cpALS is used.
+
+----------------------------------------
+result = srscpd(TS, R);
+
+Perform SRSCPD on tensor TS with desired rank R.
+
+    TS - input tensor data.
+    R - the desired maximum rank.
+
+    result - output structure returning a set of solutions for rank from 1 to R. i.e. result(k) contains the decomposition result for rank k.
+	result(k).U:
+		A cell array of the components in each mode.
+    Lambda:
+    	A number array of the scales for each component
+    Output:
+    	Additional output structure contains: Flag - whether the decomposition at rank k is successful or not; numItr - the actual number of iterations for rank k decomposition; EV - the explained variance when using the rank k result to fit the original data tensor; Stats - optionally return the CORCONDIA metric if requested
+
+----------------------------------------
+result = srscpd(TS, R, option);
+
+Perform SRSCPD on tensor TS with desired rank R and custom options
+
+----------------------------------------
+Also see demo.m for an example
+
+For more information, visit https://silencer1127.github.io/software/NASCAR/nascar_main.
