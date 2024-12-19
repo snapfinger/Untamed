@@ -1,0 +1,62 @@
+========================================
+License
+========================================
+
+Without otherwise noticed, the Group BrainSync (GBS) code and all of its dependencies ("CODE"), including, but not limited to, the dependent functions, files, documentations, either distributed in source code or a compiled version, are licensed under the GNU General Public License, version 3 (GPLv3). Further details can be found at https://www.gnu.org/licenses/gpl-3.0.en.html.
+
+You are required to cite at least the original GBS papers as follows, if you use this CODE and/or its derivatives in your own work.
+
+H. Akrami, A. A. Joshi, J. Li, R. M. Leahy,
+"Group-wise alignment of resting fMRI in space and time",
+Proc. SPIE Medical Imaging 2019: Image Processing, San Diego, CA, Mar. 2019, pp. 737–744.      
+https://doi.org/10.1117/12.2512564
+
+========================================
+Disclaimer
+========================================
+
+IN NO EVENT SHALL THE AUTHORS, THE CONTRIBUTORS, THE DISTRIBUTORS AND THE UNIVERSITY OF SOUTHERN CALIFORNIA ("AUTHORS") BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS CODE, EVEN IF THE AUTHORS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE AUTHORS SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. FOR RESEARCH PURPOSE ONLY. THIS CODE IS PROVIDED ON A "AS IS" BASIS AND THE AUTHORS HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+========================================
+Usage
+========================================
+
+GroupBrainSync supports direct computation on data matrix or a list of file names with a data loading function when memory is limited.
+
+[Y, O] = groupBrainSync(data, option);
+
+    data
+        A 3D numerical data with a size of T x V x S. where T is the number of time points, V is the number of voxels/vertices, and S is the number of subjects. Or a cell list of file names that will be passed to dataLoadingFunc below to read each subject data.
+
+    option
+        A option struct with the following fields.
+
+    	option.isDataMatrix:
+    		A binary flag indicating if the provided data is a matrix or a list of file names. Default is true.
+
+        option.dataLoadingFunc:
+            The function handle to load data from the files, only used when isDataMatrix is false.
+
+        option.batchSize:
+        	The number of subjects to be processed in each batch, only used when isDataMatrix is false.
+
+        option.numCPU:
+        	The number of CPU used when parallel computing is available, default is 0 for single thread computation.
+        
+        option.epsX:
+        	The convergence criterion, default is 1e-3.
+
+        option.isVerbose
+            The verbose binary flag to report progress during computation, default is true.
+
+
+    Y
+        The virtual subject
+    O
+        The transforms that synchronize subjects to Y
+
+Default options can be obtained by calling groupBrainSync without any inputs.
+    option = groupBrainSync();
+
+Also see demo.m for an example
+

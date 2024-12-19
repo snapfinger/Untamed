@@ -1,0 +1,7 @@
+2020/12/14
+    * First release of the Nadam-Accelerated SCAlable and Robust (NASCAR) CP Decomposition
+
+2021/10/31
+    * Provide an option to save results after each rank
+    * Provide an option to resume the decomposition using the saved results from lower ranks
+    * Provide an option to save the logs (what is printed in the command window) to a file
