@@ -13,8 +13,10 @@ We present **Untamed**, a novel framework that integrates unconstrained tensor d
 
 📁 Content
 ----
-- `artifact/nascar_GSP_rst.mat`: NASCAR networks generated from the [GSP dataset](https://www.nature.com/articles/sdata201531))
-- `vis_spatial_corr.ipynb`:  Jupyter notebook for visualizing spatial correlations between brain networks. It compares ICA components (downloaded from HCP) and NASCAR networks (from the file above, based on GSP).
+- [`artifact/nascar_GSP_rst.mat`](artifact/nascar_GSP_rst.mat): Contains NASCAR networks derived from the [GSP dataset](https://www.nature.com/articles/sdata201531).
+
+- [`vis_spatial_corr.ipynb`](vis_spatial_corr.ipynb): Jupyter notebook for visualizing spatial correlations between brain networks. It compares ICA components from the [HCP S1200 release](https://www.humanconnectome.org/study/hcp-young-adult/document/1200-subjects-data-release) (available on the [HCP website](https://db.humanconnectome.org/app/template/Login.vm)) with the NASCAR networks in the file above.
+
 
 
 🚀 Generate your own *Untamed* atlas
