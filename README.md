@@ -25,7 +25,7 @@ We present **Untamed**, a novel framework that integrates unconstrained tensor d
 
 2. Replace `nascar_GSP_rst.mat` with a network file generated from your own dataset.
 
-3. Run `run_untamed.m`` to produce the parcellation.
+3. Run `run_untamed.m` to produce the parcellation.
 
 📚 Citation
 ---
