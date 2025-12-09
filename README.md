@@ -19,14 +19,14 @@ The Untamed pipeline consists of three main stages:
 
 ## 📋 Table of Contents
 
-- [Installation & Requirements](#installation--requirements)
-- [Quick Start Guide](#quick-start-guide)
-- [Step-by-Step Tutorial](#step-by-step-tutorial)
-- [Using with Custom Data](#using-with-custom-data)
-- [Parameter Guide](#parameter-guide)
-- [Output Description](#output-description)
-- [Troubleshooting](#troubleshooting)
-- [Citation](#citation)
+- [Installation & Requirements](#-installation--requirements)
+- [Quick Start Guide](#-quick-start-guide)
+- [Step-by-Step Tutorial](#-step-by-step-tutorial)
+- [Using with Custom Data](#-using-with-custom-data)
+- [Parameter Guide](#%EF%B8%8F-parameter-guide)
+- [Output Description](#-output-description)
+- [Troubleshooting](#-troubleshooting)
+- [Citation](#-citation)
 
 ---
 
