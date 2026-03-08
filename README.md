@@ -424,15 +424,18 @@ load('./untamed_output/parcel.mat');
 If you use Untamed in your research, please cite:
 
 ```bibtex
-@article{untamed2025,
-    title={Untamed: Unconstrained Tensor Decomposition and Graph Node Embedding for Cortical Parcellation},
-    author={Liu, Yijun and Li, Jian and Wisnowski, Jessica L and Leahy, Richard M},
-    journal={bioRxiv},
-    pages={2024.01.05.574423},
-    year={2025},
-    publisher={Cold Spring Harbor Laboratory}
+@article{untamed2026,
+title = {Untamed: Unconstrained Tensor Decomposition and Graph Node Embedding for Cortical Parcellation},
+author = {Liu, Yijun and Li, Jian and Wisnowski, Jessica L. and Leahy, Richard M.},
+journal = {Human Brain Mapping},
+volume = {47},
+pages = {e70483},
+year = {2026},
+publisher={Wiley}
 }
 ```
+
+
 
 ### Additional Citations
 
